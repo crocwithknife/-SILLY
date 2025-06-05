@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SILLY Token Presale</title>
+    <!-- Tailwind CSS CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for animations or specific overrides if needed */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom animation for header (simple fade-in-down, can be expanded) */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-in-down {
+            animation: fadeInDown 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 text-gray-800 flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+
+    <!-- Header Section -->
+    <header class="w-full max-w-4xl text-center mb-12 animate-fade-in-down">
+        <h1 class="text-6xl sm:text-7xl font-extrabold text-purple-600 mb-4 tracking-tight leading-tight drop-shadow-lg">
+            <!-- Zap Icon (Inline SVG) -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block w-14 h-14 sm:w-16 sm:h-16 mr-3 text-yellow-500 transform -rotate-12">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            Hello, Cute Human! Meet SILLY!
+        </h1>
+        <p class="text-xl sm:text-2xl text-blue-800 font-semibold drop-shadow-sm">
+            Activating Presale Protocol for SILLY Token. It's time for fun and future!
+        </p>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="w-full max-w-4xl bg-white p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-pink-200 transform scale-98 hover:scale-100 transition-transform duration-500 ease-out">
+
+        <!-- Presale Countdown Timer -->
+        <section class="text-center mb-10 p-6 bg-gradient-to-br from-teal-200 to-green-200 rounded-2xl shadow-lg border-2 border-teal-100">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-6 text-green-800 drop-shadow-md flex items-center justify-center gap-3">
+                <!-- Timer Icon (Inline SVG) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-green-600">
+                    <path d="M10 2h4"></path><path d="M12 14v4"></path><path d="M4.93 4.93l1.41 1.41"></path><path d="M19.07 19.07l-1.41-1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M17.66 6.34l-1.41 1.41"></path><path d="M6.34 17.66l1.41-1.41"></path>
+                    <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+                Presale Concludes In:
+            </h2>
+            <div id="countdown-timer" class="flex justify-center items-center space-x-3 sm:space-x-5">
+                <!-- Timer components will be inserted here by JavaScript -->
+                <span class="text-3xl font-bold text-gray-700">Loading Timer...</span>
+            </div>
+            <p id="presale-ended-message" class="hidden text-4xl font-extrabold text-red-600">Presale Has Concluded!</p>
+        </section>
+
+        <!-- Call to Action Section -->
+        <section class="text-center mb-10 p-6 bg-gradient-to-br from-pink-300 to-blue-300 rounded-2xl shadow-xl border-2 border-pink-200">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-purple-800 drop-shadow-md">
+                Activate Presale Participation!
+            </h2>
+            <p class="text-lg mb-6 text-gray-700">
+                Send your $CRO tokens to the designated SILLY Fun-Hub Address below.
+                Your SILLY tokens will teleport directly to your wallet upon presale completion.
+            </p>
+            <div class="flex flex-col items-center gap-4">
+                <div class="bg-blue-100 p-4 rounded-xl flex items-center justify-between w-full max-w-md border-2 border-blue-300 break-all shadow-md">
+                    <span id="presale-address" class="text-blue-700 text-lg sm:text-xl font-mono pr-2 font-semibold">0xCF0c2ed50C31aFaA4fE434445a32e649E43604AE</span>
+                    <button id="copy-button" class="ml-3 p-3 rounded-full transition-all duration-300 ease-in-out transform hover:scale-110 active:scale-95 bg-blue-500 hover:bg-blue-600 shadow-lg text-white flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-blue-300" aria-label="Copy presale address">
+                        <!-- ClipboardCopy Icon (Inline SVG) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7">
+                            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div id="message-box" class="hidden mt-2 text-sm px-4 py-2 rounded-lg bg-green-100 text-green-700 border border-green-300 drop-shadow-sm">
+                    <!-- Message text will be inserted here by JavaScript -->
+                </div>
+                <p class="text-orange-600 text-sm mt-2 flex items-center justify-center font-medium">
+                    <!-- Info Icon (Inline SVG) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block w-5 h-5 mr-1">
+                        <circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path>
+                    </svg>
+                    Remember: $CRO on the Cronos Network, human!
+                </p>
+            </div>
+        </section>
+
+        <!-- SILLY Allocation Protocol Section -->
+        <section class="text-center mb-10 p-6 bg-yellow-100 rounded-2xl shadow-lg border-2 border-yellow-200">
+            <h2 class="text-3xl sm:text-4xl font-bold mb-4 text-orange-700 flex items-center justify-center gap-3 drop-shadow-md">
+                <!-- CircleDollarSign Icon (Inline SVG) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-amber-500">
+                    <circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4h-6"></path><path d="M12 17v3"></path><path d="M12 4v3"></path>
+                </svg>
+                SILLY Allocation Protocol
+            </h2>
+            <p class="text-lg mb-4 text-gray-700">
+                Your SILLY token count will be perfectly tuned based on your contribution to the total $CRO received during this exciting presale event.
+            </p>
+            <div class="bg-yellow-50 p-4 rounded-lg border border-yellow-200 text-gray-700 text-left font-mono text-base sm:text-lg overflow-x-auto shadow-inner">
+                <p class="mb-2 font-semibold">
+                    Calculation Directive:
+                </p>
+                <p class="font-bold text-blue-700 leading-relaxed">
+                    (Your $CRO Contribution / Total $CRO Contributed) x Total SILLY Presale Allocation
+                </p>
+                <p class="mt-2 text-sm text-gray-600 font-medium">
+                    Total SILLY Presale Allocation: <span class="font-bold text-purple-600" id="totalSillyPresaleAllocationSpan">400,000,000 SILLY</span> (40% of 1 Billion Total Supply)
+                </p>
+            </div>
+            <p class="text-sm mt-4 text-gray-600 font-medium">
+                Your SILLY units will be beamed to you after presale conclusion.
+            </p>
+        </section>
+
+        <!-- Tokenomics Section -->
+        <section class="mb-10 p-6 bg-purple-100 rounded-2xl shadow-lg border-2 border-purple-200">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-6 flex items-center justify-center gap-3 text-purple-700 drop-shadow-md">
+                <!-- CircleDollarSign Icon (Inline SVG) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-pink-500">
+                    <circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4h-6"></path><path d="M12 17v3"></path><path d="M12 4v3"></path>
+                </svg>
+                Operational Tokenomics Breakdown
+            </h2>
+            <div class="grid grid-cols-1 gap-6">
+                <!-- Presale Allocation -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-2 border-pink-200 hover:scale-105 transition-transform duration-300">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-2xl font-semibold text-gray-800">Pre-Sale Allocation</h3>
+                        <span class="text-purple-500 font-bold text-2xl">40% (<span id="presaleAllocationCount"></span> SILLY)</span>
+                    </div>
+                    <p class="text-lg text-gray-600">
+                        Purpose: Funds for LP seeding.
+                    </p>
+                </div>
+
+                <!-- LP Seeding -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-2 border-green-200 hover:scale-105 transition-transform duration-300">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-2xl font-semibold text-gray-800">LP Seeding</h3>
+                        <span class="text-green-500 font-bold text-2xl">40% (<span id="lpSeedingAllocationCount"></span> SILLY)</span>
+                    </div>
+                    <p class="text-lg text-gray-600">
+                        Purpose: Provide liquidity on DEXs for smooth trading. LP tokens will be burned.
+                    </p>
+                </div>
+
+                <!-- Liquidity & Marketing -->
+                <div class="bg-white p-5 rounded-xl shadow-md border-2 border-orange-200 hover:scale-105 transition-transform duration-300">
+                    <div class="flex items-center justify-between mb-2">
+                        <h3 class="text-2xl font-semibold text-gray-800">Liquidity & Marketing</h3>
+                        <span class="text-orange-500 font-bold text-2xl">20% (<span id="liquidityMarketingAllocationCount"></span> SILLY)</span>
+                    </div>
+                    <p class="text-lg text-gray-600">
+                        Purpose: Support yield farming, exchange listings, and marketing for growth.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Important Notes/Disclaimer Section -->
+        <section class="p-6 bg-blue-100 rounded-2xl shadow-lg border-2 border-blue-300">
+            <h2 class="text-3xl sm:text-4xl font-bold text-center mb-6 flex items-center justify-center gap-3 text-blue-700 drop-shadow-md">
+                <!-- Info Icon (Inline SVG) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-teal-500">
+                    <circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path>
+                </svg>
+                Critical Data Logs
+            </h2>
+            <ul class="list-disc list-inside text-lg text-gray-700 space-y-3 pl-5">
+                <li>
+                    SILLY tokens will be beamed to your wallet address after presale protocol completion.
+                </li>
+                <li>
+                    Only transmit $CRO from a non-custodial wallet (e.g., MetaMask, Trust Wallet).
+                    Direct exchange transmissions are not recommended, human.
+                </li>
+                <li>
+                    Please ensure comprehension of cryptographic asset investment risks prior to participation.
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="w-full max-w-4xl text-center mt-12 pt-6 border-t-4 border-purple-200 text-gray-500">
+        <p>&copy; <span id="current-year"></span> SILLY Token. All systems nominal and delightfully cute!</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Constants
+            const presaleAddress = '0xCF0c2ed50C31aFaA4fE434445a32e649E43604AE';
+            const totalSillySupply = 1000000000; // 1 Billion SILLY tokens
+            const presaleAllocationPercentage = 0.40; // 40%
+            const totalSillyPresaleAllocation = totalSillySupply * presaleAllocationPercentage; // 400,000,000 SILLY
+            const lpSeedingAllocation = totalSillySupply * 0.40; // 40%
+            const liquidityMarketingAllocation = totalSillySupply * 0.20; // 20%
+
+            // DOM Elements
+            const presaleAddressSpan = document.getElementById('presale-address');
+            const copyButton = document.getElementById('copy-button');
+            const messageBox = document.getElementById('message-box');
+            const countdownTimerElement = document.getElementById('countdown-timer');
+            const presaleEndedMessage = document.getElementById('presale-ended-message');
+            const currentYearSpan = document.getElementById('current-year');
+
+            // Tokenomics count elements
+            const presaleAllocationCountSpan = document.getElementById('presaleAllocationCount');
+            const lpSeedingAllocationCountSpan = document.getElementById('lpSeedingAllocationCount');
+            const liquidityMarketingAllocationCountSpan = document.getElementById('liquidityMarketingAllocationCount');
+
+            // Set initial content and year
+            presaleAddressSpan.textContent = presaleAddress;
+            currentYearSpan.textContent = new Date().getFullYear();
+
+            presaleAllocationCountSpan.textContent = totalSillyPresaleAllocation.toLocaleString();
+            lpSeedingAllocationCountSpan.textContent = lpSeedingAllocation.toLocaleString();
+            liquidityMarketingAllocationCountSpan.textContent = liquidityMarketingAllocation.toLocaleString();
+
+            // IMPORTANT: This is a fixed date for the presale end, consistent for everyone.
+            // It is set to Monday, June 9, 2025 at 2:36 PM EEST (GMT+3).
+            const presaleEndDate = new Date('2025-06-09T14:36:00+03:00'); // YYYY-MM-DDTHH:MM:SS+HH:MM (EEST is GMT+3)
+
+            let timerInterval; // To store the interval ID for clearing
+
+            // Function to calculate and update time remaining
+            function calculateTimeLeft() {
+                const difference = +presaleEndDate - +new Date();
+                let timeLeft = {};
+
+                if (difference > 0) {
+                    timeLeft = {
+                        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+                        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                        minutes: Math.floor((difference / 1000 / 60) % 60),
+                        seconds: Math.floor((difference / 1000) % 60),
+                    };
+                }
+                return timeLeft;
+            }
+
+            // Function to update the timer display
+            function updateTimerDisplay() {
+                const timeLeft = calculateTimeLeft();
+                if (Object.keys(timeLeft).length === 0) {
+                    // Presale has ended
+                    countdownTimerElement.classList.add('hidden');
+                    presaleEndedMessage.classList.remove('hidden');
+                    clearInterval(timerInterval); // Stop the timer
+                } else {
+                    // Presale is ongoing, update display
+                    countdownTimerElement.classList.remove('hidden');
+                    presaleEndedMessage.classList.add('hidden');
+                    let timerHtml = '';
+                    // Only show units if they are relevant (e.g., don't show "00 days" if it's less than a day)
+                    if (timeLeft.days > 0) {
+                        timerHtml += `<span class="p-3 bg-purple-200 rounded-lg shadow-md text-purple-800 text-2xl sm:text-3xl font-bold flex flex-col items-center justify-center">${timeLeft.days < 10 ? '0' + timeLeft.days : timeLeft.days}<span class="text-sm font-normal text-purple-700 mt-1">days</span></span>`;
+                    }
+                    if (timeLeft.days > 0 || timeLeft.hours > 0) { // Show hours if days left or if it's less than a day
+                        timerHtml += `<span class="p-3 bg-purple-200 rounded-lg shadow-md text-purple-800 text-2xl sm:text-3xl font-bold flex flex-col items-center justify-center">${timeLeft.hours < 10 ? '0' + timeLeft.hours : timeLeft.hours}<span class="text-sm font-normal text-purple-700 mt-1">hours</span></span>`;
+                    }
+                    if (timeLeft.days > 0 || timeLeft.hours > 0 || timeLeft.minutes > 0) { // Show minutes if hours left or if it's less than an hour
+                        timerHtml += `<span class="p-3 bg-purple-200 rounded-lg shadow-md text-purple-800 text-2xl sm:text-3xl font-bold flex flex-col items-center justify-center">${timeLeft.minutes < 10 ? '0' + timeLeft.minutes : timeLeft.minutes}<span class="text-sm font-normal text-purple-700 mt-1">minutes</span></span>`;
+                    }
+                    // Always show seconds if presale is active
+                    timerHtml += `<span class="p-3 bg-purple-200 rounded-lg shadow-md text-purple-800 text-2xl sm:text-3xl font-bold flex flex-col items-center justify-center">${timeLeft.seconds < 10 ? '0' + timeLeft.seconds : timeLeft.seconds}<span class="text-sm font-normal text-purple-700 mt-1">seconds</span></span>`;
+                    
+                    countdownTimerElement.innerHTML = timerHtml || '<span class="text-3xl font-bold text-gray-700">Loading Timer...</span>';
+                }
+            }
+
+            // Initial call and start interval
+            updateTimerDisplay();
+            timerInterval = setInterval(updateTimerDisplay, 1000);
+
+            // Copy to clipboard functionality
+            copyButton.addEventListener('click', function() {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = presaleAddress;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    messageBox.textContent = 'Address copied to clipboard!';
+                    messageBox.classList.remove('hidden');
+                    copyButton.classList.add('bg-green-500', 'hover:bg-green-600');
+                    copyButton.classList.remove('bg-blue-500', 'hover:bg-blue-600');
+                    setTimeout(() => {
+                        messageBox.classList.add('hidden');
+                        copyButton.classList.remove('bg-green-500', 'hover:bg-green-600');
+                        copyButton.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                    }, 3000);
+                } catch (err) {
+                    messageBox.textContent = 'Failed to copy address. Please copy manually.';
+                    messageBox.classList.remove('hidden');
+                    setTimeout(() => messageBox.classList.add('hidden'), 3000);
+                } finally {
+                    document.body.removeChild(tempInput);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
