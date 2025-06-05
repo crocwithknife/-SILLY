@@ -1,0 +1,259 @@
+import React, { useState, useEffect } from 'react';
+import { ClipboardCopy, Info, CircleDollarSign, Percent, Zap, Timer } from 'lucide-react'; // Added Timer icon
+
+// Main App component
+const App = () => {
+  const presaleAddress = '0xCF0c2ed50C31aFaA4fE434445a32e649E43604AE';
+  const totalSillySupply = 1000000000; // 1 Billion SILLY tokens
+  const presaleAllocationPercentage = 0.40; // 40%
+  const totalSillyPresaleAllocation = totalSillySupply * presaleAllocationPercentage; // 400,000,000 SILLY
+
+  // Calculate specific token counts for tokenomics
+  const lpSeedingAllocation = totalSillySupply * 0.40; // 40%
+  const liquidityMarketingAllocation = totalSillySupply * 0.20; // 20%
+
+  const [copied, setCopied] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const [message, setMessage] = useState('');
+  const [timeLeft, setTimeLeft] = useState({});
+  const [presaleEnded, setPresaleEnded] = useState(false);
+
+  // Set the presale end date 4 days from now
+  const presaleEndDate = new Date();
+  presaleEndDate.setDate(presaleEndDate.getDate() + 4);
+
+  // Function to calculate time remaining
+  const calculateTimeLeft = () => {
+    const difference = +presaleEndDate - +new Date();
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
+    } else {
+      setPresaleEnded(true);
+    }
+    return timeLeft;
+  };
+
+  // Effect hook for the countdown timer
+  useEffect(() => {
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    // Cleanup interval on component unmount
+    return () => clearInterval(timer);
+  }, []);
+
+  // Function to copy the presale address to clipboard
+  const copyToClipboard = () => {
+    const tempInput = document.createElement('textarea');
+    tempInput.value = presaleAddress;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+      document.execCommand('copy');
+      setMessage('Address copied to clipboard!');
+      setShowMessage(true);
+      setCopied(true);
+      setTimeout(() => {
+        setShowMessage(false);
+        setCopied(false);
+      }, 3000);
+    } catch (err) {
+      setMessage('Failed to copy address. Please copy manually.');
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 3000);
+    } finally {
+      document.body.removeChild(tempInput);
+    }
+  };
+
+  const timerComponents = [];
+  Object.keys(timeLeft).forEach((interval) => {
+    if (!timeLeft[interval] && interval !== 'seconds') { // Don't show seconds if it's 0 and higher units are also 0
+      return;
+    }
+    timerComponents.push(
+      <span key={interval} className="p-3 bg-purple-200 rounded-lg shadow-md text-purple-800 text-2xl sm:text-3xl font-bold flex flex-col items-center justify-center">
+        {timeLeft[interval] < 10 ? '0' + timeLeft[interval] : timeLeft[interval]}
+        <span className="text-sm font-normal text-purple-700 mt-1">{interval}</span>
+      </span>
+    );
+  });
+
+
+  return (
+    // Main container with Inter font, softer background, and playful overall feel
+    <div className="min-h-screen bg-gradient-to-br from-purple-100 to-blue-100 text-gray-800 font-inter flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+      {/* Tailwind CSS CDN script for compilation */}
+      <script src="https://cdn.tailwindcss.com"></script>
+      {/* Viewport meta tag for responsive design */}
+      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+      {/* Header Section */}
+      <header className="w-full max-w-4xl text-center mb-12 animate-fade-in-down">
+        <h1 className="text-6xl sm:text-7xl font-extrabold text-purple-600 mb-4 tracking-tight leading-tight drop-shadow-lg">
+          <Zap className="inline-block w-14 h-14 sm:w-16 sm:h-16 mr-3 text-yellow-500 transform -rotate-12" />
+          Hello, Cute Human! Meet SILLY!
+        </h1>
+        <p className="text-xl sm:text-2xl text-blue-800 font-semibold drop-shadow-sm">
+          Activating Presale Protocol for SILLY Token. It's time for fun and future!
+        </p>
+      </header>
+
+      {/* Main Content Area */}
+      <main className="w-full max-w-4xl bg-white p-6 sm:p-8 rounded-3xl shadow-2xl border-4 border-pink-200 transform scale-98 hover:scale-100 transition-transform duration-500 ease-out">
+
+        {/* Presale Countdown Timer */}
+        <section className="text-center mb-10 p-6 bg-gradient-to-br from-teal-200 to-green-200 rounded-2xl shadow-lg border-2 border-teal-100">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-green-800 drop-shadow-md flex items-center justify-center gap-3">
+            <Timer className="w-8 h-8 text-green-600" />
+            Presale Concludes In:
+          </h2>
+          {presaleEnded ? (
+            <p className="text-4xl font-extrabold text-red-600">Presale Has Concluded!</p>
+          ) : (
+            <div className="flex justify-center items-center space-x-3 sm:space-x-5">
+              {timerComponents.length ? timerComponents : <span className="text-3xl font-bold text-gray-700">Loading Timer...</span>}
+            </div>
+          )}
+        </section>
+
+        {/* Call to Action Section */}
+        <section className="text-center mb-10 p-6 bg-gradient-to-br from-pink-300 to-blue-300 rounded-2xl shadow-xl border-2 border-pink-200">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-purple-800 drop-shadow-md">
+            Activate Presale Participation!
+          </h2>
+          <p className="text-lg mb-6 text-gray-700">
+            Send your $CRO tokens to the designated SILLY Fun-Hub Address below.
+            Your SILLY tokens will teleport directly to your wallet upon presale completion.
+          </p>
+          <div className="flex flex-col items-center gap-4">
+            <div className="bg-blue-100 p-4 rounded-xl flex items-center justify-between w-full max-w-md border-2 border-blue-300 break-all shadow-md">
+              <span className="text-blue-700 text-lg sm:text-xl font-mono pr-2 font-semibold">{presaleAddress}</span>
+              <button
+                onClick={copyToClipboard}
+                className={`ml-3 p-3 rounded-full transition-all duration-300 ease-in-out transform hover:scale-110 active:scale-95
+                            ${copied ? 'bg-green-400 hover:bg-green-500 shadow-lg' : 'bg-blue-500 hover:bg-blue-600 shadow-lg'}
+                            text-white flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-blue-300`}
+                aria-label="Copy presale address"
+              >
+                <ClipboardCopy className="w-7 h-7" /> {/* Slightly larger icon */}
+              </button>
+            </div>
+            {showMessage && (
+              <div className="mt-2 text-sm px-4 py-2 rounded-lg bg-green-100 text-green-700 border border-green-300 drop-shadow-sm">
+                {message}
+              </div>
+            )}
+            <p className="text-orange-600 text-sm mt-2 flex items-center justify-center font-medium">
+              <Info className="inline-block w-5 h-5 mr-1" />
+              Remember: $CRO on the Cronos Network, human!
+            </p>
+          </div>
+        </section>
+
+        {/* SILLY Allocation Protocol Section */}
+        <section className="text-center mb-10 p-6 bg-yellow-100 rounded-2xl shadow-lg border-2 border-yellow-200">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4 text-orange-700 flex items-center justify-center gap-3 drop-shadow-md">
+            <CircleDollarSign className="w-8 h-8 text-amber-500" />
+            SILLY Allocation Protocol
+          </h2>
+          <p className="text-lg mb-4 text-gray-700">
+            Your SILLY token count will be perfectly tuned based on your contribution to the total $CRO received during this exciting presale event.
+          </p>
+          <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200 text-gray-700 text-left font-mono text-base sm:text-lg overflow-x-auto shadow-inner">
+            <p className="mb-2 font-semibold">
+              Calculation Directive:
+            </p>
+            <p className="font-bold text-blue-700 leading-relaxed">
+              (Your $CRO Contribution / Total $CRO Contributed) x Total SILLY Presale Allocation
+            </p>
+            <p className="mt-2 text-sm text-gray-600 font-medium">
+              Total SILLY Presale Allocation: <span className="font-bold text-purple-600">{totalSillyPresaleAllocation.toLocaleString()} SILLY</span> (40% of 1 Billion Total Supply)
+            </p>
+          </div>
+          <p className="text-sm mt-4 text-gray-600 font-medium">
+            Your SILLY units will be beamed to you after presale conclusion.
+          </p>
+        </section>
+
+        {/* Tokenomics Section */}
+        <section className="mb-10 p-6 bg-purple-100 rounded-2xl shadow-lg border-2 border-purple-200">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6 flex items-center justify-center gap-3 text-purple-700 drop-shadow-md">
+            <CircleDollarSign className="w-8 h-8 text-pink-500" />
+            Operational Tokenomics Breakdown
+          </h2>
+          <div className="grid grid-cols-1 gap-6">
+            {/* Presale Allocation */}
+            <div className="bg-white p-5 rounded-xl shadow-md border-2 border-pink-200 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-2xl font-semibold text-gray-800">Pre-Sale Allocation</h3>
+                <span className="text-purple-500 font-bold text-2xl">40% ({totalSillyPresaleAllocation.toLocaleString()} SILLY)</span>
+              </div>
+              <p className="text-lg text-gray-600">
+                Purpose: Funds for LP seeding.
+              </p>
+            </div>
+
+            {/* LP Seeding */}
+            <div className="bg-white p-5 rounded-xl shadow-md border-2 border-green-200 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-2xl font-semibold text-gray-800">LP Seeding</h3>
+                <span className="text-green-500 font-bold text-2xl">40% ({lpSeedingAllocation.toLocaleString()} SILLY)</span>
+              </div>
+              <p className="text-lg text-gray-600">
+                Purpose: Provide liquidity on DEXs for smooth trading. LP tokens will be burned.
+              </p>
+            </div>
+
+            {/* Liquidity & Marketing */}
+            <div className="bg-white p-5 rounded-xl shadow-md border-2 border-orange-200 hover:scale-105 transition-transform duration-300">
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="text-2xl font-semibold text-gray-800">Liquidity & Marketing</h3>
+                <span className="text-orange-500 font-bold text-2xl">20% ({liquidityMarketingAllocation.toLocaleString()} SILLY)</span>
+              </div>
+              <p className="text-lg text-gray-600">
+                Purpose: Support yield farming, exchange listings, and marketing for growth.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Important Notes/Disclaimer Section */}
+        <section className="p-6 bg-blue-100 rounded-2xl shadow-lg border-2 border-blue-300">
+          <h2 className="text-3xl sm:text-4xl font-bold text-center mb-6 flex items-center justify-center gap-3 text-blue-700 drop-shadow-md">
+            <Info className="w-8 h-8 text-teal-500" />
+            Critical Data Logs
+          </h2>
+          <ul className="list-disc list-inside text-lg text-gray-700 space-y-3 pl-5">
+            <li>
+              SILLY tokens will be beamed to your wallet address after presale protocol completion.
+            </li>
+            <li>
+              Only transmit $CRO from a non-custodial wallet (e.g., MetaMask, Trust Wallet).
+              Direct exchange transmissions are not recommended, human.
+            </li>
+            <li>
+              Please ensure comprehension of cryptographic asset investment risks prior to participation.
+            </li>
+          </ul>
+        </section>
+      </main>
+
+      {/* Footer Section */}
+      <footer className="w-full max-w-4xl text-center mt-12 pt-6 border-t-4 border-purple-200 text-gray-500">
+        <p>&copy; {new Date().getFullYear()} SILLY Token. All systems nominal and delightfully cute!</p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
